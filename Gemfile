@@ -6,4 +6,5 @@ gem 'thin'
 
 group :development do
   gem 'pry'
+  gem 'rerun'
 end

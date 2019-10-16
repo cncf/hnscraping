@@ -11,6 +11,5 @@
 
 ## Running development server
 
-* Install rerun `gem install rerun`
 * Run server: `rerun 'rackup'` 
 * Visit http://localhost:9292
