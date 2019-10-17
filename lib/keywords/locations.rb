@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 module Keywords
-  COUNTRIES = {
+  COUNTRY_NAMES = {
     'AU' => 'Australia',
     'UK' => 'United Kingdom'
   }.freeze
@@ -130,11 +130,16 @@ module Keywords
     locations = []
 
     LOCATIONS.each do |name, **extra|
-      full_name = [name, extra[:state], extra[:country]].compact.join(', ')
+      full_name = [name, extra[:state], COUNTRY_NAMES[extra[:country]]].compact.join(', ')
       options = {}
       if extra[:finder]
         options[:finder] = extra[:finder]
-      elsif !extra[:strict] && full_name != name
+      elsif extra[:strict]
+        options[:aliases] = extra[:aliases] || []
+        options[:aliases] << "#{name},? #{extra[:state]}" if extra[:state]
+        options[:aliases] << "#{name},? #{extra[:country]}" if extra[:country]
+        options[:aliases] << "#{name},? #{COUNTRY_NAMES[extra[:country]]}" if extra[:country]
+      elsif full_name != name
         options[:aliases] = extra[:aliases] || []
         options[:aliases] << name
       end
