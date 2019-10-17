@@ -86,6 +86,7 @@ module Keywords
     'Oxford',
     ['Palo Alto', state: 'CA'],
     'Paris',
+    'Perth',
     ['Phoenix', state: 'AZ', strict: true],
     ['Philadelphia', state: 'PA'],
     ['Pittsburgh', state: 'PA'],
