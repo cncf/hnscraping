@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
 require 'loofah'
-require File.join(__dir__, 'keywords')
+require_relative 'keyword_finder'
+
+# TODO check we're showing full URLs
 
 class Job
   APPLY_URL_REGEX = /careers|jobs|greenhouse\.io|grnh\.se|lever\.co|workable\.com|applytojob\.com|recruitee\.com/
 
   attr_reader :id, :description
-
-  ROLES = {
-    'DevOps Engineer' => /\bdevops\b/i,
-    'Site Reliability Engineer' => /\bSREs?\b|\bSite Reliability Engineers?\b/i,
-    'Infrastructure Engineer' => /\bInfrastructure Engineers?\b/i
-  }.freeze
 
   def initialize(attrs)
     @id = "hacker-news/#{attrs.fetch('id')}"
@@ -34,11 +30,11 @@ class Job
   end
 
   def role
-    @role ||= get_first_match(description, ROLES)
+    @role ||= KeywordFinder.first(:roles, description)
   end
 
   def location
-    @location ||= get_first_match(sanitized_description, Keywords::LOCATIONS)
+    @location ||= KeywordFinder.first(:locations, sanitized_description)
   end
 
   def company_url
@@ -60,21 +56,6 @@ class Job
   end
 
   private
-
-  def get_first_match(text, collection)
-    first_match = nil
-    match_position = text.length
-
-    collection.each do |name, regex|
-      index = text.index(regex)
-      next if !index || index >= match_position
-      match_position = index
-      first_match = name
-      text = text[0...match_position]
-      return first_match if match_position.zero?
-    end
-    first_match
-  end
 
   def first_line
     @first_line ||= sanitized_description.split("\n").first
