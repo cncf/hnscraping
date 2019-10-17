@@ -52,7 +52,7 @@ class Job
   end
 
   def sanitized_description
-    @sanitized_description ||= Loofah.fragment(description).to_text.strip
+    @sanitized_description ||= Loofah.scrub_fragment(description, url_scrubber).to_text.strip
   end
 
   private
@@ -90,5 +90,10 @@ class Job
       .flatten
       .select { |url| url.match?(APPLY_URL_REGEX) }
       .uniq
+  end
+
+  # Replace link tags with their href instead of the link text
+  def url_scrubber
+    Loofah::Scrubber.new { |node| node.inner_html = " #{node['href']} " if node.name == 'a' }
   end
 end
