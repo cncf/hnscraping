@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+watch_dir=$(dirname $(dirname $0))
+rerun -d $watch_dir -b "$watch_dir/bin/run > $watch_dir/feed.xml"
