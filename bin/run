@@ -8,4 +8,4 @@ require File.join(root_path, 'lib', 'jobs_repository')
 template = File.read(File.join(root_path, 'lib', 'templates', 'feed.erb'))
 
 @jobs = JobsRepository.fetch_jobs
-puts ERB.new(template).result(binding)
+puts ERB.new(template, nil, '-').result(binding)
