@@ -10,6 +10,16 @@ sudo mkdir -p /var/www/cncf-jobs
 sudo chown -R $USER:$USER /var/www/cncf-jobs
 sudo systemctl restart nginx
 
+if ! command -v certbot; then
+    printf "\n\n****** Setting Up Certbot"
+    sudo apt-get update
+    sudo apt-get -y install software-properties-common
+    sudo add-apt-repository universe
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get -y install certbot python-certbot-nginx
+fi
+
 EXPORT_RBENV_PATH="export PATH='$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH'"
 
 eval $EXPORT_RBENV_PATH
