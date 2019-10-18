@@ -28,12 +28,11 @@
       <%- if job.company_url -%>
       <company_url><%= job.company_url %></company_url>
       <%- end -%>
-      <%- if job.apply_email -%>
-      <email><%= job.apply_email %></email>
-      <%- end -%>
       <%- if job.apply_url -%>
-      <url><%= job.apply_url %></url>
-      <%- end -%>
+        <apply_url><%= job.apply_url %></apply_url>
+      <%- elsif job.apply_email -%>
+        <apply_email><%= job.apply_email %></apply_email>
+      <%- end  -%>
       <location><%= job.location %></location>
       <description><%= job.sanitized_description %></description>
     </job>
