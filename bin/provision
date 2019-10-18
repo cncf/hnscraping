@@ -59,6 +59,8 @@ else
     bundle install --without development test
     printf "\n\n****** Setting Up Crontab"
     echo "0 * * * * $EXPORT_RBENV_PATH && $RUN_CMD" | crontab
+    printf "\n\n****** Generating feed.xml"
+    eval $RUN_CMD
 fi
 
 printf "\n\n****** Provisioning complete"
