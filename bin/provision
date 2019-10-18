@@ -4,7 +4,7 @@ printf "\n\n****** Installing Linux dependencies"
 sudo apt-get -y install build-essential libssl-dev libreadline-dev zlib1g-dev nginx
 
 printf "\n\n****** Setting Up Nginx"
-sudo cp "$INSTALLATION_DIR/config/hnjobs" /etc/nginx/sites-available/default
+sudo cp "$PWD/config/hnjobs" /etc/nginx/sites-available/default
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sudo mkdir -p /var/www/hnjobs
 sudo chown -R $USER:$USER /var/www/hnjobs
@@ -29,12 +29,6 @@ if ! command -v rbenv; then
     echo $EXPORT_RBENV_PATH >> ~/.bashrc
 fi
 
-if ! [ -d $INSTALLATION_DIR ]; then
-    git clone https://github.com/cncf/hnscraping.git "$INSTALLATION_DIR"
-fi
-
-cd "$INSTALLATION_DIR"
-
 if ! [ -z $VAGRANT_HOME ]; then
     printf "\n\n****** Pulling repo"
     git pull
@@ -47,7 +41,7 @@ if ! command -v ruby || ! ruby -v; then
 fi
 
 crontab -r
-export RUN_CMD="$INSTALLATION_DIR/bin/run > /var/www/hnjobs/feed.xml"
+export RUN_CMD="$PWD/bin/run > /var/www/hnjobs/feed.xml"
 
 if [ "$ENVIRONMENT" == "development" ]; then
     printf "\n\n****** Installing Development Gems"
