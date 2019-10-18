@@ -4,10 +4,10 @@ printf "\n\n****** Installing Linux dependencies"
 sudo apt-get -y install build-essential libssl-dev libreadline-dev zlib1g-dev nginx
 
 printf "\n\n****** Setting Up Nginx"
-sudo cp "$INSTALLATION_DIR/config/cncf-jobs" /etc/nginx/sites-available/default
+sudo cp "$INSTALLATION_DIR/config/hnjobs" /etc/nginx/sites-available/default
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-sudo mkdir -p /var/www/cncf-jobs
-sudo chown -R $USER:$USER /var/www/cncf-jobs
+sudo mkdir -p /var/www/hnjobs
+sudo chown -R $USER:$USER /var/www/hnjobs
 sudo systemctl restart nginx
 
 if ! command -v certbot; then
@@ -47,7 +47,7 @@ if ! command -v ruby || ! ruby -v; then
 fi
 
 crontab -r
-export RUN_CMD="$INSTALLATION_DIR/bin/run > /var/www/cncf-jobs/feed.xml"
+export RUN_CMD="$INSTALLATION_DIR/bin/run > /var/www/hnjobs/feed.xml"
 
 if [ $ENVIRONMENT == "development" ]; then
     printf "\n\n****** Installing Development Gems"
