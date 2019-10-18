@@ -51,8 +51,8 @@ class Job
     @apply_url ||= all_apply_urls.length == 1 ? all_apply_urls.first : find_apply_url
   end
 
-  def sanitized_description
-    @sanitized_description ||= Loofah.scrub_fragment(description, url_scrubber).to_text.strip
+  def formatted_description
+    @formatted_description ||= Rack::Utils.escape_html(Loofah.scrub_fragment(description, url_scrubber).to_s)
   end
 
   private
@@ -92,8 +92,12 @@ class Job
       .uniq
   end
 
+  def sanitized_description
+    @sanitized_description ||= Loofah.fragment(description).to_text.strip
+  end
+
   # Replace link tags with their href instead of the link text
   def url_scrubber
-    Loofah::Scrubber.new { |node| node.inner_html = " #{node['href']} " if node.name == 'a' }
+    Loofah::Scrubber.new { |node| node.inner_html = node['href'] if node.name == 'a' }
   end
 end

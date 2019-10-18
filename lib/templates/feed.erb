@@ -34,7 +34,7 @@
         <apply_email><%= job.apply_email %></apply_email>
       <%- end  -%>
       <location><%= job.location %></location>
-      <description><%= job.sanitized_description %></description>
+      <description><%= job.formatted_description %></description>
     </job>
   <%- end -%>
 </jobs>

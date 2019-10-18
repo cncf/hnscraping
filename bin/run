@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'erb'
+require 'rack'
 
 root_path = File.expand_path('..', __dir__)
 require File.join(root_path, 'lib', 'jobs_repository')
