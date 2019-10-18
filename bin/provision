@@ -49,7 +49,7 @@ fi
 crontab -r
 export RUN_CMD="$INSTALLATION_DIR/bin/run > /var/www/hnjobs/feed.xml"
 
-if [ $ENVIRONMENT == "development" ]; then
+if [ "$ENVIRONMENT" == "development" ]; then
     printf "\n\n****** Installing Development Gems"
     bundle
     printf "\n\n****** Setting Up Crontab"
