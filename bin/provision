@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+printf "\n\n****** Installing Linux dependencies"
+sudo apt-get -y install build-essential libssl-dev libreadline-dev zlib1g-dev nginx
+
+printf "\n\n****** Setting Up Nginx"
+sudo cp "$INSTALLATION_DIR/config/cncf-jobs" /etc/nginx/sites-available/default
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo mkdir -p /var/www/cncf-jobs
+sudo chown -R $USER:$USER /var/www/cncf-jobs
+sudo systemctl restart nginx
+
+EXPORT_RBENV_PATH="export PATH='$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH'"
+
+eval $EXPORT_RBENV_PATH
+if ! command -v rbenv; then
+    printf "\n\n****** Installing rbenv"
+    curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
+    echo $EXPORT_RBENV_PATH >> ~/.bashrc
+fi
+
+if ! [ -d $INSTALLATION_DIR ]; then
+    git clone https://github.com/cncf/hnscraping.git "$INSTALLATION_DIR"
+fi
+
+cd "$INSTALLATION_DIR"
+
+if ! [ -z $VAGRANT_HOME ]; then
+    printf "\n\n****** Pulling repo"
+    git pull
+fi
+
+if ! command -v ruby || ! ruby -v; then
+    printf "\n\n****** Installing Ruby"
+    rbenv install
+    gem install bundler
+fi
+
+crontab -r
+export RUN_CMD="$INSTALLATION_DIR/bin/run > /var/www/cncf-jobs/feed.xml"
+
+if [ $ENVIRONMENT == "development" ]; then
+    printf "\n\n****** Installing Development Gems"
+    bundle
+    printf "\n\n****** Setting Up Crontab"
+    echo "* * * * * $EXPORT_RBENV_PATH && $RUN_CMD" | crontab
+else
+    printf "\n\n****** Installing Production Gems"
+    bundle install --without development test
+    printf "\n\n****** Setting Up Crontab"
+    echo "0 * * * * $EXPORT_RBENV_PATH && $RUN_CMD" | crontab
+fi
+
+printf "\n\n****** Provisioning complete"

@@ -1,0 +1,9 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/cncf-jobs;
+	server_name _;
+	location / {
+		try_files $uri =404;
+	}
+}
