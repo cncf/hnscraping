@@ -1,6 +1,7 @@
 <html>
 <head>
   <style>
+    * { box-sizing: border-box; }
     body { margin: 0;}
     .jobs { border: 1px solid #ccc; border-bottom: 0; }
     .job { width: 100%; overflow: hidden; display: flex; border-bottom: 1px solid #ccc; }
@@ -13,13 +14,15 @@
     .header .filter { position: absolute; top: 15px; right: 15px; }
     .description { border-right: 1px solid #ccc; padding: 0 15px; overflow-x: auto; }
     .description pre { overflow-x: auto; }
-    .description, .info { flex: 1; }
-    .name, .value { display: inline-block; padding: 15px; }
-    .name { width: 120px; }
-    .row { border-bottom: 1px solid #ccc; }
+    .description, .info { flex: 1; max-width: 50%; }
+    .row { border-bottom: 1px solid #ccc; display: flex; }
     .row:nth-child(even) { background-color: #eeeeee; }
     .row .name { border-right: 1px solid #ccc; }
     .row:last-child { margin-bottom: 20px; }
+    .name, .value { flex: 1; padding: 15px; }
+    .name { max-width: 160px; }
+    .description p, .value { overflow-x: hidden; text-overflow: ellipsis; }
+    .description p a, .value a { white-space: nowrap; }
   </style>
 </head>
 <body>
