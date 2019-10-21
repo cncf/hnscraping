@@ -8,10 +8,11 @@ require_relative 'keyword_finder'
 class Job
   APPLY_URL_REGEX = /careers|jobs|greenhouse\.io|grnh\.se|lever\.co|workable\.com|applytojob\.com|recruitee\.com/
 
-  attr_reader :id, :description
+  attr_reader :id, :description, :url
 
   def initialize(attrs)
     @id = "hacker-news/#{attrs.fetch('id')}"
+    @url = "https://news.ycombinator.com/item?id=#{attrs.fetch('id')}"
     @description = attrs.fetch('text')
   end
 
@@ -52,10 +53,14 @@ class Job
   end
 
   def formatted_description
-    @formatted_description ||= Rack::Utils.escape_html(Loofah.scrub_fragment(description, url_scrubber).to_s)
+    @formatted_description ||= Rack::Utils.escape_html(Loofah.scrub_fragment(description, url_scrubber).to_s + source)
   end
 
   private
+
+  def source
+    %{<p>From: <a href="#{url}">#{url}</a></p>}
+  end
 
   def first_line
     @first_line ||= sanitized_description.split("\n").first
