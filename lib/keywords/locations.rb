@@ -80,6 +80,7 @@ module Keywords
     'Munich',
     'New Delhi',
     ['New York', state: 'NY', aliases: ['NYC', 'Manhattan']],
+    ['Newton', state: 'MA', strict: true],
     ['Oakland', state: 'CA'],
     ['Oklahoma City', state: 'OK'],
     'Oslo',
