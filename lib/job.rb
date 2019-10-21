@@ -53,7 +53,7 @@ class Job
   end
 
   def formatted_description
-    @formatted_description ||= Rack::Utils.escape_html(Loofah.scrub_fragment(description, url_scrubber).to_s + source)
+    @formatted_description ||= Loofah.scrub_fragment(description, url_scrubber).to_s + source
   end
 
   private

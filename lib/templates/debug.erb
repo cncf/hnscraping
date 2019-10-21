@@ -1,0 +1,132 @@
+<html>
+<head>
+  <style>
+    body { margin: 0;}
+    .jobs { border: 1px solid #ccc; border-bottom: 0; }
+    .job { width: 100%; overflow: hidden; display: flex; border-bottom: 1px solid #ccc; }
+    .job.hidden { display: none; }
+    .row.valid .value { color: green; }
+    .row.invalid .value { color: red; }
+    .row.missing .value { color: red; }
+    .header { padding: 15px; }
+    .header .total { margin-bottom: 15px; }
+    .header .filter { position: absolute; top: 15px; right: 15px; }
+    .description { border-right: 1px solid #ccc; padding: 0 15px; overflow-x: auto; }
+    .description pre { overflow-x: auto; }
+    .description, .info { flex: 1; }
+    .name, .value { display: inline-block; padding: 15px; }
+    .name { width: 120px; }
+    .row { border-bottom: 1px solid #ccc; }
+    .row:nth-child(even) { background-color: #eeeeee; }
+    .row .name { border-right: 1px solid #ccc; }
+    .row:last-child { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="total">
+    Total: <span data-behavior="total"></span>
+  </div>
+
+  <div class="updated-at">
+    Updated at: <span data-behavior="updated-at" data-value="<%= Time.now %>"></span>
+  </div>
+
+  <div class="filter">
+    Filter:
+    <select data-behavior="filter">
+      <option value=".row">All</option>
+      <option value=".valid">Valid</option>
+      <option value=".invalid">Invalid</option>
+      <option value=".role.missing">Missing Role</option>
+      <option value=".company.missing">Missing Company</option>
+      <option value=".apply_info.missing">Missing Apply Details</option>
+      <option value=".location.missing">Missing Location</option>
+    </select>
+  </div>
+</div>
+<div class="jobs">
+  <%- @jobs.each do |job| -%>
+    <div class="job">
+      <div class="description"><%= job.formatted_description %></div>
+      <div class="info">
+        <div class="row <%= job.valid? ? 'valid' : 'invalid' %>">
+          <div class="name">Status</div>
+          <div class="value"><%= job.valid? ? "VALID" : "INVALID" %></div>
+        </div>
+
+        <div class="row">
+          <div class="name">URL</div>
+          <div class="value"><%= linkify(job.url) %></div>
+        </div>
+
+        <div class="row role <%= job.role ? '' : 'missing' %>">
+          <div class="name">Role</div>
+          <div class="value"><%= job.role || "MISSING" %></div>
+        </div>
+
+        <div class="row company <%= job.company ? '' : 'missing' %>">
+          <div class="name">Company</div>
+          <div class="value"><%= job.company || "MISSING" %></div>
+        </div>
+
+        <div class="row">
+          <div class="name">Company URL</div>
+          <div class="value"><%= linkify(job.company_url) %></div>
+        </div>
+
+        <%- if job.apply_url -%>
+          <div class="row">
+            <div class="name">Apply URL</div>
+            <div class="value"><%= linkify(job.apply_url) %></div>
+          </div>
+        <%- elsif job.apply_email -%>
+          <div class="row">
+            <div class="name">Apply Email</div>
+            <div class="value"><%= job.apply_email %></div>
+          </div>
+        <%- else -%>
+          <div class="row apply_info missing">
+            <div class="name">Apply URL/Email</div>
+            <div class="value">MISSING</div>
+          </div>
+        <% end %>
+
+        <div class="row location <%= job.location ? '' : 'missing' %>">
+          <div class="name">Location</div>
+          <div class="value"><%= job.location || "MISSING" %></div>
+        </div>
+      </div>
+    </div>
+  <%- end -%>
+</div>
+</body>
+
+<script type="text/javascript">
+  function updateTotal() {
+    var total = document.querySelectorAll('.job:not(.hidden)').length;
+    document.querySelector('[data-behavior="total"]').innerHTML = total;
+  }
+
+  function updateTimestamp() {
+    var updatedAt = document.querySelector('[data-behavior="updated-at"]').getAttribute('data-value');
+    document.querySelector('[data-behavior="updated-at"]').innerHTML = (new Date(updatedAt)).toLocaleString("en-US");
+  }
+
+  document.querySelector('[data-behavior="filter"]').addEventListener("change", function(e) {
+    var selector = e.target.value;
+
+    document.querySelectorAll(".job").forEach(function(job) {
+      var visible = !!job.querySelector(selector);
+
+      visible ? job.classList.remove("hidden") : job.classList.add("hidden");
+    });
+
+    updateTotal();
+  });
+
+  updateTotal();
+  updateTimestamp();
+</script>
+</html>
+

@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jobs>
-  <%- if @debug -%>
-    <counts>
-      <% @jobs.group_by(&:role).sort_by { |_, group| -group.length }.each do |role, group| %>
-        <count>
-          <role><%= role %></role>
-          <total><%= group.length %></total>
-        </count>
-      <% end %>
-      <% @jobs.group_by(&:location).sort_by { |_, group| -group.length }.each do |location, group| %>
-        <count>
-          <location><%= location %></location>
-          <total><%= group.length %></total>
-        </count>
-      <% end %>
-      <count>
-        <name>Total</name>
-        <total><%= @jobs.length %></total>
-      </count>
-    </counts>
-  <%- end -%>
-  <%- @jobs.each do |job| -%>
+  <%- @jobs.select(&:valid?).each do |job| -%>
     <job>
       <reference><%= job.id %></reference>
       <title><%= job.role %></title>
@@ -34,7 +14,7 @@
         <email><%= job.apply_email %></email>
       <%- end  -%>
       <location><%= job.location %></location>
-      <description><%= job.formatted_description %></description>
+      <description><%= h job.formatted_description %></description>
     </job>
   <%- end -%>
 </jobs>

@@ -6,8 +6,7 @@ module JobsRepository
   def self.fetch_jobs
     post = get_latest_hiring_post
     comments = get_comments(post['objectID'])
-    comments.map { |comment| Job.new(comment) }
-      .select { |job| job.relevant? && job.valid? }
+    comments.map { |comment| Job.new(comment) }.select(&:relevant?)
   end
 
   private
