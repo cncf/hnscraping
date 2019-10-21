@@ -86,7 +86,7 @@
         <%- elsif job.apply_email -%>
           <div class="row">
             <div class="name">Apply Email</div>
-            <div class="value"><%= job.apply_email %></div>
+            <div class="value"><%= job.apply_email.gsub(/.*@/, '*******@') %></div>
           </div>
         <%- else -%>
           <div class="row apply_info missing">
