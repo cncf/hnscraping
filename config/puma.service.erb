@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=vagrant
+User=<%= ENV['USER'] %>
 WorkingDirectory=<%= ENV['PWD'] %>
 ExecStart=<%= ENV['HOME'] %>/.rbenv/shims/bundle exec puma -C <%= ENV['PWD'] %>/config/puma.rb
 PIDFile=/tmp/pids/puma.pid
