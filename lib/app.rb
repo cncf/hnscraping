@@ -8,11 +8,16 @@ class App < Sinatra::Base
     if event == 'push' && push['ref'] == 'refs/heads/master'
       output = "Deploying master\n"
       output += `cd #{File.expand_path(__dir__)}/.. && bin/provision 2>&1`
-      status $?.success? ? 200 : 400
+      halt 400, output unless $?.success?
       output
     else
       "Not deploying.\nEvent: #{event}\nRef: #{push['ref']}"
     end
+  end
+
+  get '/lol' do
+    status 1 ? 200 : 400
+    "lol"
   end
 
   private
