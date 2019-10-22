@@ -58,7 +58,9 @@ erb "$PWD/config/hnjobs.erb" | sudo tee /etc/nginx/sites-available/default > /de
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service > /dev/null
 if ! [ -d '/vagrant' ]; then
+    set +e
     sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
+    set -e
 fi
 printf "\n\n****** Restarting services"
 sudo systemctl daemon-reload
