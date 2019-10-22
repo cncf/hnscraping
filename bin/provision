@@ -56,12 +56,12 @@ if [ "$ENVIRONMENT" == "development" ]; then
     printf "\n\n****** Installing Development Gems"
     bundle
     printf "\n\n****** Setting Up Crontab"
-    echo "* * * * * $EXPORT_RBENV_PATH && $RUN_CMD" | crontab
+    echo "* * * * * PATH=$PATH $RUN_CMD" | crontab
 else
     printf "\n\n****** Installing Production Gems"
     bundle install --without development test
     printf "\n\n****** Setting Up Crontab"
-    echo "0 * * * * $EXPORT_RBENV_PATH && $RUN_CMD" | crontab
+    echo "0 * * * * PATH=$PATH $RUN_CMD" | crontab
     printf "\n\n****** Generating feed.xml"
 fi
 
