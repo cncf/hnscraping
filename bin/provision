@@ -14,6 +14,9 @@ sudo cp "$PWD/config/hnjobs" /etc/nginx/sites-available/default
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sudo mkdir -p /var/www/hnjobs
 sudo chown -R $USER:$USER /var/www/hnjobs
+if ! [ -d '/vagrant' ]; then
+    sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
+fi
 sudo systemctl restart nginx
 
 if ! command -v certbot; then
