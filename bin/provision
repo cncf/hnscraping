@@ -60,6 +60,7 @@ erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service >
 if ! [ -d '/vagrant' ]; then
     sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
 fi
+printf "\n\n****** Restarting services"
 sudo systemctl daemon-reload
 sudo systemctl enable puma
 sudo systemctl restart puma
