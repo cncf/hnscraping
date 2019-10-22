@@ -1,0 +1,15 @@
+[Unit]
+Description=Puma HTTP Server
+After=network.target
+
+[Service]
+Type=simple
+User=vagrant
+WorkingDirectory=<%= ENV['PWD'] %>
+ExecStart=<%= ENV['HOME'] %>/.rbenv/shims/bundle exec puma -C <%= ENV['PWD'] %>/config/puma.rb
+PIDFile=/tmp/pids/puma.pid
+Restart=always
+EnvironmentFile=<%= ENV['PWD'] %>/.env
+
+[Install]
+WantedBy=multi-user.target

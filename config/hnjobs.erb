@@ -1,0 +1,20 @@
+upstream hnjobs {
+  server unix:///tmp/puma.sock;
+}
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root <%= ENV['PWD'] %>/public;
+	server_name _;
+
+	location / {
+		try_files $uri @puma;
+	}
+
+	location @puma {
+        include proxy_params;
+
+        proxy_pass http://hnjobs;
+    }
+}

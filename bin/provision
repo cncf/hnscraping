@@ -5,20 +5,6 @@ set -e
 printf "\n\n****** Installing Linux dependencies"
 sudo apt-get -y install build-essential libssl-dev libreadline-dev zlib1g-dev nginx
 
-if [ -d '/vagrant' ]; then
-    cd '/vagrant'
-fi
-
-printf "\n\n****** Setting Up Nginx"
-sudo cp "$PWD/config/hnjobs" /etc/nginx/sites-available/default
-sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-sudo mkdir -p /var/www/hnjobs
-sudo chown -R $USER:$USER /var/www/hnjobs
-if ! [ -d '/vagrant' ]; then
-    sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
-fi
-sudo systemctl restart nginx
-
 if ! command -v certbot; then
     printf "\n\n****** Setting Up Certbot"
     sudo apt-get update
@@ -50,7 +36,9 @@ if ! command -v ruby || ! ruby -v; then
 fi
 
 crontab -r
-export RUN_CMD="$PWD/bin/run /var/www/hnjobs"
+sudo mkdir -p public log tmp
+sudo chown -R $USER:$USER public log tmp
+export RUN_CMD="$PWD/bin/run $PWD/public"
 
 if [ "$ENVIRONMENT" == "development" ]; then
     printf "\n\n****** Installing Development Gems"
@@ -64,6 +52,19 @@ else
     echo "0 * * * * PATH=$PATH $RUN_CMD" | crontab
     printf "\n\n****** Generating feed.xml"
 fi
+
+printf "\n\n****** Setting Up Nginx and Puma"
+erb "$PWD/config/hnjobs.erb" | sudo tee /etc/nginx/sites-available/default > /dev/null
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+if ! [ -d '/vagrant' ]; then
+    sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
+fi
+erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service > /dev/null
+sudo systemctl daemon-reload
+sudo systemctl enable puma
+sudo systemctl restart puma
+sudo systemctl enable nginx
+sudo systemctl restart nginx
 
 eval $RUN_CMD
 
