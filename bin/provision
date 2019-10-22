@@ -56,10 +56,10 @@ fi
 printf "\n\n****** Setting Up Nginx and Puma"
 erb "$PWD/config/hnjobs.erb" | sudo tee /etc/nginx/sites-available/default > /dev/null
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service > /dev/null
 if ! [ -d '/vagrant' ]; then
     sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
 fi
-erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service > /dev/null
 sudo systemctl daemon-reload
 sudo systemctl enable puma
 sudo systemctl restart puma
