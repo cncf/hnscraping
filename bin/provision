@@ -50,7 +50,6 @@ else
     bundle install --without development test
     printf "\n\n****** Setting Up Crontab"
     echo "0 * * * * PATH=$PATH $RUN_CMD" | crontab
-    printf "\n\n****** Generating feed.xml"
 fi
 
 printf "\n\n****** Setting Up Nginx and Puma"
@@ -58,21 +57,18 @@ erb "$PWD/config/hnjobs.erb" | sudo tee /etc/nginx/sites-available/default > /de
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service > /dev/null
 
+printf "\n\n****** Generating feed.xml"
+nohup bash -c "$RUN_CMD" &
 
-eval $RUN_CMD
+RESTART_CMD="sleep 5";
+if ! [ -d '/vagrant' ]; then
+    RESTART_CMD="$RESTART_CMD && sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect"
+fi
+RESTART_CMD="$RESTART_CMD && sudo systemctl enable puma"
+RESTART_CMD="$RESTART_CMD && sudo systemctl enable nginx"
+RESTART_CMD="$RESTART_CMD && sudo systemctl restart puma"
+RESTART_CMD="$RESTART_CMD && sudo systemctl restart nginx"
 
-restart_servers () {
-    if ! [ -d '/vagrant' ]; then
-        sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
-    fi
-    sudo systemctl enable puma
-    sudo systemctl enable nginx
-    sudo systemctl restart puma
-    sudo systemctl restart nginx
-}
-
-export -f restart_servers
-
-nohup bash -c 'sleep 5 && restart_servers' &
+nohup bash -c "$RESTART_CMD" &
 
 printf "\n\n****** Provisioning complete. Restarting..."
