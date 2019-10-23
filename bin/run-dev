@@ -2,4 +2,5 @@
 
 watch_dir=$(dirname $(dirname $0))
 mkdir -p $watch_dir/tmp
-rerun -d "$watch_dir/lib" -b "$watch_dir/bin/run $watch_dir/tmp"
+cmd="$watch_dir/bin/run $watch_dir/public"
+rerun -d $watch_dir/lib -b "rackup -p 9292 -e \"puts '***** Generating feed with command: $cmd'; system('$cmd')\""

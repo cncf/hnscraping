@@ -1,4 +1,6 @@
 class App < Sinatra::Base
+  set :public_folder, Proc.new { File.join(root, '..', 'public') }
+
   post '/deploy' do
     request.body.rewind
     payload_body = request.body.read
