@@ -58,7 +58,7 @@ sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service > /dev/null
 
 printf "\n\n****** Generating feed.xml"
-nohup bash -c "$RUN_CMD" &
+nohup bash -c "$RUN_CMD" & disown
 
 RESTART_CMD="sleep 5";
 if ! [ -d '/vagrant' ]; then
@@ -67,8 +67,8 @@ fi
 RESTART_CMD="$RESTART_CMD && sudo systemctl enable puma"
 RESTART_CMD="$RESTART_CMD && sudo systemctl enable nginx"
 RESTART_CMD="$RESTART_CMD && sudo systemctl restart puma"
-RESTART_CMD="$RESTART_CMD && sudo systemctl restart nginx"
+RESTART_CMD="$RESTART_CMD && sudo systemctl reload nginx"
 
-nohup bash -c "$RESTART_CMD" &
+nohup bash -c "$RESTART_CMD" & disown
 
 printf "\n\n****** Provisioning complete. Restarting..."
