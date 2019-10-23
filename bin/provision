@@ -40,7 +40,7 @@ sudo mkdir -p public log tmp
 sudo chown -R $USER:$USER public log tmp
 export RUN_CMD="$PWD/bin/run $PWD/public"
 
-if [ "$ENVIRONMENT" == "development" ]; then
+if [ "$RACK_ENV" == "development" ]; then
     printf "\n\n****** Installing Development Gems"
     bundle
     printf "\n\n****** Setting Up Crontab"
