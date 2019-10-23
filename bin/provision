@@ -2,6 +2,8 @@
 
 set -e
 
+printf "****** Deploy triggered at: $(date)"
+
 printf "\n\n****** Installing Linux dependencies"
 sudo apt-get -y install build-essential libssl-dev libreadline-dev zlib1g-dev nginx
 
@@ -56,17 +58,18 @@ printf "\n\n****** Setting Up Nginx and Puma"
 erb "$PWD/config/hnjobs.erb" | sudo tee /etc/nginx/sites-available/default > /dev/null
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 erb "$PWD/config/puma.service.erb" | sudo tee /etc/systemd/system/puma.service > /dev/null
-
-RESTART_CMD="sleep 5";
 if ! [ -d '/vagrant' ]; then
-    RESTART_CMD="$RESTART_CMD && sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect"
+    sudo certbot run --nginx -n --domains hnjobs.cncf.io --redirect
 fi
-RESTART_CMD="$RESTART_CMD && sudo systemctl enable puma"
-RESTART_CMD="$RESTART_CMD && sudo systemctl enable nginx"
-RESTART_CMD="$RESTART_CMD && sudo systemctl restart puma"
-RESTART_CMD="$RESTART_CMD && sudo systemctl reload nginx"
 
-printf "\n\n****** Provisioning complete. Generating feed and restarting...\n"
+printf "\n\n****** Generate Feed"
+eval $RUN_CMD
 
-bash -c "$RUN_CMD && $RESTART_CMD" &
-disown
+printf "\n\n****** Restart Services"
+sudo systemctl enable puma
+sudo systemctl enable nginx
+sudo systemctl restart puma
+sudo systemctl reload nginx
+
+printf "\n\n****** Provisioning complete"
+

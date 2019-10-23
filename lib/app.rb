@@ -6,12 +6,13 @@ class App < Sinatra::Base
     event = request.env['HTTP_X_GITHUB_EVENT']
     push = JSON.parse(payload_body)
     if event == 'push' && push['ref'] == 'refs/heads/master'
-      output = "Deploying master\n"
-      output += `cd #{File.expand_path(__dir__)}/.. && bin/provision 2>&1`
-      halt 400, output unless $?.success?
-      output
+      directory = File.expand_path(File.join(__dir__, '..'))
+      log_file = "#{directory}/log/deploy.log"
+      command = %{nohup bash -c "cd #{directory} && bin/provision" > #{log_file} & disown}
+      `#{command}`
+      "Deploy triggered.\n\nExecuting command: #{command}.\n\nLogs saved at #{log_file}\n"
     else
-      "Not deploying.\nEvent: #{event}\nRef: #{push['ref']}"
+      "Not deploying.\nEvent: #{event}\nRef: #{push['ref']}\n"
     end
   end
 
