@@ -16,6 +16,10 @@ class App < Sinatra::Base
     end
   end
 
+  get '/status' do
+    'OK'
+  end
+
   private
 
   def verify_signature(payload_body)
