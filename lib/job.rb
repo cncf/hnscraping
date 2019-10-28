@@ -56,6 +56,10 @@ class Job
     @formatted_description ||= Loofah.scrub_fragment(description, url_scrubber).to_s + source
   end
 
+  def remote?
+    KeywordFinder.includes?(:locations, "Remote", sanitized_description)
+  end
+
   private
 
   def source

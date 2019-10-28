@@ -12,7 +12,7 @@ Extract jobs related to CNCF from Hacker News "Who is hiring?" post. Match jobs 
 
 ## Running development server
 
-* Run server: `./bin.run-dev` 
+* Run server: `./bin/run-dev` 
 * Visit http://localhost:9292/feed.xml or http://localhost:9292/debug.html
 
 ## Deployments

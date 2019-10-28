@@ -15,6 +15,12 @@ class KeywordFinder
     first_match
   end
 
+  def self.includes?(kind, keyword, text)
+    _, finder = @keywords[kind].detect { |name, _| name == keyword }
+    index = finder.is_a?(Regexp) ? text.index(finder) : finder.call(text)
+    !index.nil?
+  end
+
   def self.append(kind, collection)
     @keywords ||= {}
 
