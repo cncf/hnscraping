@@ -3,7 +3,7 @@
   <%- @jobs.select(&:valid?).each do |job| -%>
     <job>
       <reference><%= job.id %></reference>
-      <title><%= job.remote? ? "Remote " : nil %><%= job.role %></title>
+      <title><%= job.role %><%= job.remote? ? " - remote" : nil %></title>
       <company><%= job.company %></company>
       <%- if job.company_url -%>
       <company_url><%= job.company_url %></company_url>
