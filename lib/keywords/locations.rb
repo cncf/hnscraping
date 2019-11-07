@@ -74,6 +74,7 @@ module Keywords
     ['Melbourne', state: 'FL'],
     ['Menlo Park', state: 'CA'],
     'Mexico City',
+    'Milan',
     ['Mountain View', state: 'CA'],
     'Montreal',
     'Mumbai',
@@ -123,6 +124,7 @@ module Keywords
     ['Tucson', state: 'AZ'],
     'Vancouver',
     'Vienna',
+    ['Waltham', state: 'MA'],
     'Warsaw',
     'Wellington',
     'Zurich'

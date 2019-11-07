@@ -4,7 +4,8 @@ module Keywords
   ROLES = [
     ['DevOps Engineer', aliases: ['DevOps']],
     ['Site Reliability Engineer', aliases: ['SRE', 'SREs', 'Site Reliability Engineers']],
-    ['Infrastructure Engineer', aliases: ['Infrastructure Engineers']]
+    ['Infrastructure Engineer', aliases: ['Infrastructure Engineers']],
+    ['Systems Engineer', aliases: ['Systems Engineers']]
   ].freeze
 end
 
