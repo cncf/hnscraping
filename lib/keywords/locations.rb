@@ -38,6 +38,7 @@ module Keywords
     ['Chicago', state: 'IL'],
     ['Cincinnati', state: 'OH'],
     ['Cologne', alises: ['Köln']],
+    'Copenhagen',
     ['Cupertino', state: 'CA'],
     ['Dallas', state: 'TX'],
     ['Washington', state: 'DC', finder: ->(text) { text.index(/\bDC\b|\bD\.C\.\b/) }],
