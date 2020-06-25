@@ -33,6 +33,8 @@ if ! command -v rbenv; then
     echo $EXPORT_RBENV_PATH >> ~/.bashrc
 fi
 
+rbenv local
+
 if ! command -v ruby || ! ruby -v; then
     printf "\n\n****** Installing Ruby"
     rbenv install
