@@ -24,7 +24,7 @@ class KeywordFinder
   def self.append(kind, collection)
     @keywords ||= {}
 
-    @keywords[kind] = collection.map do |name, **extra|
+    @keywords[kind] = collection.map do |name, extra = {}|
       finder = extra[:finder] || prepare_regexp(name, extra[:aliases] || [])
       [name, finder]
     end

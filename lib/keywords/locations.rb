@@ -134,7 +134,7 @@ module Keywords
   def self.process_locations
     locations = []
 
-    LOCATIONS.each do |name, **extra|
+    LOCATIONS.each do |name, extra = {}|
       full_name = [name, extra[:state], COUNTRY_NAMES[extra[:country]]].compact.join(', ')
       options = {}
       if extra[:finder]
