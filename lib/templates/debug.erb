@@ -32,7 +32,7 @@
   </div>
 
   <div class="updated-at">
-    Updated at: <span data-behavior="updated-at" data-value="<%= Time.now %>"></span>
+    Updated at: <span data-behavior="updated-at" data-value="<%= Time.now.to_i * 1000 %>"></span>
   </div>
 
   <div class="filter">
@@ -113,7 +113,7 @@
 
   function updateTimestamp() {
     var updatedAt = document.querySelector('[data-behavior="updated-at"]').getAttribute('data-value');
-    document.querySelector('[data-behavior="updated-at"]').innerHTML = (new Date(updatedAt)).toLocaleString("en-US");
+    document.querySelector('[data-behavior="updated-at"]').innerHTML = (new Date(parseInt(updatedAt))).toLocaleString("en-US");
   }
 
   document.querySelector('[data-behavior="filter"]').addEventListener("change", function(e) {
