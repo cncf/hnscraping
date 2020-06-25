@@ -37,7 +37,7 @@ if ! command -v ruby || ! ruby -v; then
     gem install bundler
 fi
 
-crontab -r
+crontab -r || true
 sudo mkdir -p public log tmp
 sudo chown -R $USER:$USER public log tmp
 export RUN_CMD="$PWD/bin/run $PWD/public"
