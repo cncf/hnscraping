@@ -4,6 +4,8 @@ set -e
 
 printf "****** Deploy triggered at: $(date)"
 
+printf "\n\n****** Running as $(whoami)"
+
 printf "\n\n****** Installing Linux dependencies"
 sudo apt-get -y install build-essential libssl-dev libreadline-dev zlib1g-dev nginx
 
@@ -71,5 +73,5 @@ sudo systemctl enable nginx
 sudo systemctl restart puma
 sudo systemctl reload nginx
 
-printf "\n\n****** Provisioning complete"
+printf "\n\n****** Provisioning complete\n\n"
 
