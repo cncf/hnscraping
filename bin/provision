@@ -19,6 +19,11 @@ if ! command -v certbot; then
     sudo apt-get -y install certbot python-certbot-nginx
 fi
 
+if ! [ -d '/vagrant' ]; then
+    printf "\n\n****** Pulling repo\n"
+    git pull
+fi
+
 EXPORT_RBENV_PATH="export PATH='$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH'"
 
 eval $EXPORT_RBENV_PATH
@@ -26,11 +31,6 @@ if ! command -v rbenv; then
     printf "\n\n****** Installing rbenv"
     curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
     echo $EXPORT_RBENV_PATH >> ~/.bashrc
-fi
-
-if ! [ -d '/vagrant' ]; then
-    printf "\n\n****** Pulling repo\n"
-    git pull
 fi
 
 if ! command -v ruby || ! ruby -v; then
