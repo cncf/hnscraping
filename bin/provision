@@ -29,7 +29,7 @@ if ! command -v rbenv; then
 fi
 
 if ! [ -d '/vagrant' ]; then
-    printf "\n\n****** Pulling repo"
+    printf "\n\n****** Pulling repo\n"
     git pull
 fi
 
@@ -45,12 +45,12 @@ sudo chown -R $USER:$USER public log tmp
 export RUN_CMD="$PWD/bin/run $PWD/public"
 
 if [ "$RACK_ENV" == "development" ]; then
-    printf "\n\n****** Installing Development Gems"
+    printf "\n\n****** Installing Development Gems\n"
     bundle
     printf "\n\n****** Setting Up Crontab"
     echo "* * * * * PATH=$PATH $RUN_CMD" | crontab
 else
-    printf "\n\n****** Installing Production Gems"
+    printf "\n\n****** Installing Production Gems\n"
     bundle install --without development test
     printf "\n\n****** Setting Up Crontab"
     echo "0 * * * * PATH=$PATH $RUN_CMD" | crontab
@@ -67,7 +67,7 @@ fi
 printf "\n\n****** Generate Feed"
 eval $RUN_CMD
 
-printf "\n\n****** Restart Services"
+printf "\n\n****** Restart Services\n"
 sudo systemctl enable puma
 sudo systemctl enable nginx
 sudo systemctl restart puma
