@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/repo
+      - ./log:/repo/log
+    restart: unless-stopped
+    command: "rerun -d lib -b 'puma -C config/puma.rb'"

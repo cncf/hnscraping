@@ -1,6 +1,6 @@
 app_path = Dir.getwd
 
-bind "unix:///tmp/puma.sock"
+bind "tcp://0.0.0.0:8000"
 pidfile "/tmp/puma.pid"
 state_path "/tmp/puma.state"
 stdout_redirect "#{app_path}/log/puma.stdout.log", "#{app_path}/log/puma.stderr.log", true

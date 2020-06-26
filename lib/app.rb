@@ -10,7 +10,7 @@ class App < Sinatra::Base
     if event == 'push' && push['ref'] == 'refs/heads/master'
       directory = File.expand_path(File.join(__dir__, '..'))
       log_file = "#{directory}/log/deploy.log"
-      command = %{nohup bash -c "cd #{directory} && bin/provision" > #{log_file} & disown}
+      command = %{nohup bash -c "cd #{directory} && PATH=#{ENV['PATH']} bin/deploy &> #{log_file}" &}
       `#{command}`
       "Deploy triggered.\n\nExecuting command: #{command}.\n\nLogs saved at #{log_file}\n"
     else
