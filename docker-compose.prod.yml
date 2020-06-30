@@ -1,11 +1,5 @@
 version: '3.8'
 services:
-  app:
-    expose:
-      - "8000"
-    restart: unless-stopped
-    ports: []
-    command: "puma -C config/puma.rb"
   nginx:
     image: linuxserver/letsencrypt
     container_name: letsencrypt
@@ -22,5 +16,3 @@ services:
       - 443:443
       - 80:80
     restart: unless-stopped
-    depends_on:
-      - app

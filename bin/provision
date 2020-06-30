@@ -6,6 +6,7 @@ ssh $1 <<'ENDSSH'
   sudo apt install -y git-all
   mkdir -p /home/hnjobs
   git clone https://github.com/cncf/hnscraping.git /home/hnjobs/repo
+  echo "0 * * * * /home/hnjobs/repo/bin/cronjob >> /home/hnjobs/repo/log/cron.log" | crontab
   curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
   sudo sh /tmp/get-docker.sh
   sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose

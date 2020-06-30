@@ -7,4 +7,4 @@ RUN bundle install
 
 COPY . .
 
-CMD ["puma", "-C", "config/puma.rb"]
+CMD ["ruby", "lib/generate_files.rb"]

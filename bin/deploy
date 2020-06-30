@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-git fetch --all
-git reset --hard origin/master
-bin/run

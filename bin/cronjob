@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+echo "===== Starting cron job: $(date) ====="
+git fetch --all
+git reset --hard origin/master
+bin/run
+echo "===== Finished cron job: $(date) =====\n\n"

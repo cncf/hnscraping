@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  app:
+    command: "rerun -d lib -b 'ruby lib/generate_files.rb'"
+  nginx:
+    image: nginx
+    ports:
+      - "8000:80"
+    container_name: nginx
+    volumes:
+      - ./public:/usr/share/nginx/html
+    restart: unless-stopped
