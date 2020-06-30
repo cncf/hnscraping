@@ -9,9 +9,9 @@ services:
       - URL=hnjobs.cncf.io
       - VALIDATION=http
     volumes:
-      - ./config/nginx:/config/nginx/site-confs
-      - ./public:/config/www
-      - ./log:/config/log
+      - ./nginx-config:/config
+      - ./public:/var/www
+      - ./log:/var/log
     ports:
       - 443:443
       - 80:80
