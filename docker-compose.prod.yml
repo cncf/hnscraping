@@ -1,18 +1,10 @@
 version: '3.8'
 services:
   nginx:
-    image: linuxserver/letsencrypt
-    container_name: letsencrypt
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - URL=hnjobs.cncf.io
-      - VALIDATION=http
-    volumes:
-      - ./nginx-config:/config
-      - ./public:/var/www
-      - ./log:/var/log
+    image: nginx
     ports:
-      - 443:443
-      - 80:80
+      - "80:80"
+    container_name: nginx
+    volumes:
+      - ./public:/usr/share/nginx/html
     restart: unless-stopped
