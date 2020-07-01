@@ -2,9 +2,9 @@
 
 set -eu
 
-echo "===== Starting cron job: $(date) ====="
+echo -e "===== Starting cron job: $(date) ====="
 cd $(dirname $(dirname "$0"))
 git fetch --all
 git reset --hard origin/master
 bin/run
-echo "===== Finished cron job: $(date) =====\n\n"
+echo -e "===== Finished cron job: $(date) =====\n\n"
