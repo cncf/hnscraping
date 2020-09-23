@@ -2,11 +2,12 @@ version: '3.8'
 services:
   app:
     command: "rerun -d lib -b 'ruby lib/generate_files.rb'"
-  nginx:
-    image: nginx
+  caddy:
+    image: caddy
     ports:
-      - "8000:80"
-    container_name: nginx
+      - 8000:80
+    container_name: caddy
     volumes:
-      - ./public:/usr/share/nginx/html
+      - ./public:/usr/share/caddy
+      - ./caddy_data:/data
     restart: unless-stopped

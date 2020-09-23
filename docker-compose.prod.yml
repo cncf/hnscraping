@@ -1,10 +1,14 @@
 version: '3.8'
 services:
-  nginx:
-    image: nginx
+  caddy:
+    image: caddy
     ports:
-      - "80:80"
-    container_name: nginx
+      - 80:80
+      - 443:443
+    container_name: caddy
     volumes:
-      - ./public:/usr/share/nginx/html
+      - ./public:/usr/share/caddy
+      - ./caddy_data:/data
+      - ./caddy_config:/config
+    command: caddy file-server --domain hnjobs.cncf.io --browse --root /usr/share/caddy
     restart: unless-stopped

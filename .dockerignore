@@ -1,4 +1,5 @@
 log
 public
 tmp
-nginx-conf
+caddy_config
+caddy_data
